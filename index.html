@@ -409,6 +409,44 @@
             margin-top: 6px;
         }
 
+        /* PUBLICACIONES / RRSS FEED */
+        .rrss-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .rrss-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            font-size: 13px;
+        }
+
+        .rrss-card h3 {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        .rrss-card p {
+            margin: 4px 0 8px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .rrss-card button {
+            font-size: 13px;
+        }
+
+        .fb-wrapper iframe {
+            width: 100%;
+            border-radius: 10px;
+            border: none;
+            overflow: hidden;
+        }
+
         /* CONTACTO */
         .contact-grid {
             display: grid;
@@ -465,7 +503,8 @@
         @media (max-width: 800px) {
             .hero-inner,
             .plataformas,
-            .contact-grid {
+            .contact-grid,
+            .rrss-feed {
                 grid-template-columns: 1fr;
             }
 
@@ -524,7 +563,6 @@
 
             <!-- RRSS en header -->
             <div class="rrss">
-                <!-- Cambia las URLs por tus redes reales -->
                 <a href="https://www.facebook.com/profile.php?id=61572177524767" target="_blank" rel="noopener" class="rrss-fb" aria-label="Facebook">f</a>
                 <a href="https://www.instagram.com/salvatoriautomotriz/" target="_blank" rel="noopener" class="rrss-ig" aria-label="Instagram">ig</a>
                 <a href="https://www.tiktok.com/@taller.salvatori" target="_blank" rel="noopener" class="rrss-tt" aria-label="TikTok">tt</a>
@@ -686,6 +724,48 @@
                 <p class="promo-detalle">
                     Las dinámicas pueden incluir rifas, regalos y precios especiales en servicios seleccionados.
                 </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PUBLICACIONES / RRSS -->
+    <section id="publicaciones" class="section">
+        <h2>Últimas publicaciones</h2>
+        <p class="sub">Mira lo que estamos haciendo en el taller y entérate de promociones y tips en nuestras redes.</p>
+
+        <div class="rrss-feed">
+            <!-- INSTAGRAM -->
+            <div class="rrss-card">
+                <h3>Instagram</h3>
+                <p>@salvatoriautomotriz</p>
+                <p>Trabajos, promociones y el día a día en el taller.</p>
+                <a href="https://www.instagram.com/salvatoriautomotriz/" target="_blank" rel="noopener">
+                    <button class="btn btn-primary">Ver publicaciones en Instagram</button>
+                </a>
+            </div>
+
+            <!-- FACEBOOK (con publicaciones reales embebidas) -->
+            <div class="rrss-card fb-wrapper">
+                <h3>Facebook</h3>
+                <p>Página oficial Salvatori Servicio Automotriz.</p>
+                <iframe 
+                    src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/profile.php?id=61572177524767&tabs=timeline&width=400&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false" 
+                    style="height:500px;" 
+                    scrolling="no" 
+                    frameborder="0" 
+                    allowfullscreen="true" 
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+                </iframe>
+            </div>
+
+            <!-- TIKTOK -->
+            <div class="rrss-card">
+                <h3>TikTok</h3>
+                <p>@taller.salvatori</p>
+                <p>Videos cortos, tips mecánicos y contenido para conductores.</p>
+                <a href="https://www.tiktok.com/@taller.salvatori" target="_blank" rel="noopener">
+                    <button class="btn btn-primary">Ver videos en TikTok</button>
+                </a>
             </div>
         </div>
     </section>
