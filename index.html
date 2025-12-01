@@ -355,6 +355,32 @@
             color: var(--rojo);
         }
 
+        /* PROCESO */
+        .pasos-proceso {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .paso-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            font-size: 13px;
+        }
+
+        .paso-num {
+            display: inline-block;
+            background: var(--rojo);
+            color: #fff;
+            border-radius: 999px;
+            padding: 2px 10px;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
         /* UBER / DIDI */
         .plataformas {
             background: #ffffff;
@@ -411,6 +437,74 @@
         .estrellas {
             color: #f9a825;
             font-size: 13px;
+        }
+
+        /* CASOS REALES (antes / después) */
+        .casos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .caso-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            font-size: 13px;
+        }
+
+        .caso-imagenes {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .caso-imagenes img {
+            width: 100%;
+            border-radius: 6px;
+            object-fit: cover;
+            height: 120px;
+        }
+
+        .caso-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #777;
+        }
+
+        /* PAQUETES */
+        .paquetes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .paquete-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            font-size: 13px;
+            border-top: 4px solid var(--rojo);
+        }
+
+        .paquete-card h3 {
+            margin-top: 0;
+            font-size: 16px;
+        }
+
+        .paquete-precio {
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .paquete-nota {
+            font-size: 11px;
+            color: #555;
+            margin-top: 6px;
         }
 
         /* PROMOS */
@@ -554,7 +648,10 @@
             .plataformas,
             .contact-grid,
             .rrss-feed,
-            .grid-por-que {
+            .grid-por-que,
+            .pasos-proceso,
+            .paquetes-grid,
+            .casos-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -606,11 +703,13 @@
             <a href="#inicio">Inicio</a>
             <a href="#servicios">Servicios</a>
             <a href="#por-que">¿Por qué elegirnos?</a>
+            <a href="#proceso">Cómo trabajamos</a>
+            <a href="#paquetes">Paquetes</a>
             <a href="#plataformas">Uber / Didi</a>
+            <a href="#casos">Casos reales</a>
             <a href="#testimonios">Testimonios</a>
-            <a href="#promos">Promociones</a>
             <a href="#publicaciones">Publicaciones</a>
-            <a href="#contacto">Contacto</a>
+            <a href="#bitacora">Bitácora digital</a>
             <a href="whatsapp-ayuda.html">WhatsApp rápido</a>
         </nav>
 
@@ -720,7 +819,7 @@
         </div>
     </section>
 
-    <!-- POR QUÉ ELEGIRNOS -->
+    <!-- POR QUÉ ELEGIRNOS + GARANTÍA -->
     <section id="por-que" class="section">
         <h2>¿Por qué elegir Salvatori?</h2>
         <p class="sub">Más que un taller, somos tu aliado para que tu auto siempre esté listo para trabajar y viajar seguro.</p>
@@ -741,6 +840,80 @@
             <div class="por-que-card">
                 <h3>Seriedad y respaldo</h3>
                 <p>Trabajo documentado, comunicación clara y seguimiento para generar confianza a largo plazo.</p>
+            </div>
+            <div class="por-que-card">
+                <h3>Garantía Salvatori</h3>
+                <ul class="lista-simple">
+                    <li>Garantía en mano de obra (según servicio).</li>
+                    <li>Refacciones con garantía del proveedor.</li>
+                    <li>No cambiamos piezas sin tu autorización.</li>
+                    <li>Te explicamos opciones y costos antes de reparar.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESO DEL TALLER -->
+    <section id="proceso" class="section">
+        <h2>¿Cómo trabajamos?</h2>
+        <p class="sub">Proceso claro, documentado y con seguimiento para que sepas siempre qué se está haciendo a tu auto.</p>
+
+        <div class="pasos-proceso">
+            <div class="paso-card">
+                <div class="paso-num">1. Recepción y prediagnóstico</div>
+                <p>Escuchamos tu descripción de la falla, revisamos el vehículo y dejamos asentado el estado en el formato de recepción.</p>
+            </div>
+            <div class="paso-card">
+                <div class="paso-num">2. Diagnóstico y autorización</div>
+                <p>Realizamos pruebas y/o escaneo, te explicamos la causa probable y opciones de reparación con costos aproximados. Nada se hace sin tu visto bueno.</p>
+            </div>
+            <div class="paso-card">
+                <div class="paso-num">3. Reparación, prueba y bitácora</div>
+                <p>Se realiza el trabajo, se hacen pruebas y se registra el servicio en tu <strong>bitácora digital Salvatori</strong> para futuros recordatorios.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAQUETES DE SERVICIO -->
+    <section id="paquetes" class="section">
+        <h2>Paquetes de servicio</h2>
+        <p class="sub">Diseñados para que tengas claridad en lo que incluye cada servicio y puedas planear mejor tus gastos de mantenimiento.</p>
+
+        <div class="paquetes-grid">
+            <div class="paquete-card">
+                <h3>Paquete Afinación 4 cilindros</h3>
+                <ul class="lista-simple">
+                    <li>Aceite y filtro de aceite.</li>
+                    <li>Filtro de aire y filtro de combustible (según aplicación).</li>
+                    <li>Bujías estándar.</li>
+                    <li>Revisión de 30 puntos de seguridad.</li>
+                </ul>
+                <p class="paquete-precio">Precio preferencial para Uber / Didi.</p>
+                <p class="paquete-nota">El costo final puede variar según tipo de aceite, bujías especiales o condiciones del vehículo.</p>
+            </div>
+
+            <div class="paquete-card">
+                <h3>Paquete Frenos Seguros</h3>
+                <ul class="lista-simple">
+                    <li>Cambio de balatas delanteras.</li>
+                    <li>Rectificado de discos (cuando aplica).</li>
+                    <li>Revisión de mangueras y nivel de líquido.</li>
+                    <li>Prueba de frenado y ajuste.</li>
+                </ul>
+                <p class="paquete-precio">Pensado para autos de uso diario y plataformas.</p>
+                <p class="paquete-nota">Piezas adicionales o discos fuera de medida se cotizan por separado.</p>
+            </div>
+
+            <div class="paquete-card">
+                <h3>Paquete Diagnóstico Pro</h3>
+                <ul class="lista-simple">
+                    <li>Escaneo de códigos de falla.</li>
+                    <li>Pruebas de actuadores y sistema eléctrico básico.</li>
+                    <li>Revisión visual de componentes relacionados.</li>
+                    <li>Explicación de hallazgos y opciones de reparación.</li>
+                </ul>
+                <p class="paquete-precio">Ideal cuando se enciende el check engine o hay pérdida de fuerza.</p>
+                <p class="paquete-nota">El costo del diagnóstico puede tomarse a cuenta si se realiza la reparación con nosotros (según el caso).</p>
             </div>
         </div>
     </section>
@@ -774,11 +947,52 @@
                     <p>2. Menciona a tu asesor si vienes por recomendación de algún grupo o administrador.</p>
                     <p>3. Nosotros nos encargamos de la bitácora, recordatorios y seguimiento de tu auto.</p>
                     <p style="margin-top:8px;">
-                        <a href="https://wa.me/5218711562351" target="_blank" rel="noopener">
-                            📲 Escríbenos por WhatsApp para más detalles.
+                        <a href="whatsapp-ayuda.html">
+                            📲 Ir a WhatsApp rápido
                         </a>
                     </p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASOS REALES -->
+    <section id="casos" class="section">
+        <h2>Casos reales del taller</h2>
+        <p class="sub">Algunos ejemplos de trabajos que hemos realizado recientemente. Las imágenes son ilustrativas y respetan la privacidad de nuestros clientes.</p>
+
+        <div class="casos-grid">
+            <div class="caso-card">
+                <span class="caso-tag">Suspensión · Uso en plataforma</span>
+                <div class="caso-imagenes">
+                    <img src="img/caso-suspension-antes.jpg" alt="Suspensión antes del servicio (ejemplo)">
+                    <img src="img/caso-suspension-despues.jpg" alt="Suspensión después del servicio (ejemplo)">
+                </div>
+                <p><strong>Problema:</strong> Golpeteo fuerte al pasar baches y el auto “flotaba” a alta velocidad.</p>
+                <p><strong>Solución:</strong> Cambio de amortiguadores, bujes y topes. Revisión de alineación.</p>
+                <p><strong>Resultado:</strong> Conducción más estable y segura, sin ruidos extraños.</p>
+            </div>
+
+            <div class="caso-card">
+                <span class="caso-tag">Motor · Pérdida de fuerza</span>
+                <div class="caso-imagenes">
+                    <img src="img/caso-motor-antes.jpg" alt="Motor antes del servicio (ejemplo)">
+                    <img src="img/caso-motor-despues.jpg" alt="Motor después del servicio (ejemplo)">
+                </div>
+                <p><strong>Problema:</strong> Check engine encendido y el vehículo no respondía al acelerar.</p>
+                <p><strong>Solución:</strong> Diagnóstico con escáner, cambio de bobinas y bujías, limpieza de cuerpo de aceleración.</p>
+                <p><strong>Resultado:</strong> Recuperó potencia y desapareció la luz de falla.</p>
+            </div>
+
+            <div class="caso-card">
+                <span class="caso-tag">Frenos · Viaje seguro</span>
+                <div class="caso-imagenes">
+                    <img src="img/caso-frenos-antes.jpg" alt="Frenos antes del servicio (ejemplo)">
+                    <img src="img/caso-frenos-despues.jpg" alt="Frenos después del servicio (ejemplo)">
+                </div>
+                <p><strong>Problema:</strong> Vibración en el volante al frenar y recorrido largo del pedal.</p>
+                <p><strong>Solución:</strong> Balatas nuevas, rectificado de discos y purga del sistema.</p>
+                <p><strong>Resultado:</strong> Frenado firme y parejo, ideal para trayectos largos.</p>
             </div>
         </div>
     </section>
@@ -805,6 +1019,10 @@
                 <strong>Ricardo G. · VW Jetta</strong>
             </div>
         </div>
+
+        <p style="font-size:12px; margin-top:12px;">
+            Puedes ver más opiniones y calificaciones directamente en Google buscando <strong>“Salvatori Servicio Automotriz Gómez Palacio”</strong>.
+        </p>
     </section>
 
     <!-- PROMOS -->
@@ -856,10 +1074,10 @@
         </div>
     </section>
 
-    <!-- WHATSAPP RÁPIDO -->
+    <!-- WHATSAPP RÁPIDO / PREDIAGNÓSTICO -->
     <section id="whatsapp-rapido" class="section">
-        <h2>WhatsApp rápido</h2>
-        <p class="sub">Si prefieres platicar directo, te dejamos un mensaje listo para enviar por WhatsApp.</p>
+        <h2>WhatsApp rápido y prediagnóstico</h2>
+        <p class="sub">Si prefieres platicar directo, te dejamos un mensaje listo para enviar por WhatsApp. Si quieres un prediagnóstico más completo, también tenemos una plantilla guiada.</p>
 
         <div class="servicios-grid">
             <div class="servicio-card">
@@ -872,7 +1090,69 @@
                     <button class="btn btn-primary">Enviar mensaje en WhatsApp</button>
                 </a>
                 <p style="font-size:12px; margin-top:6px;">
-                    Si quieres, después puedes agregar datos como marca, modelo, año y la falla que presenta.
+                    Puedes agregar después <strong>marca, modelo, año y descripción de la falla</strong>.
+                </p>
+            </div>
+
+            <div class="servicio-card">
+                <h3>Plantilla guiada de falla</h3>
+                <p>Si quieres que te atendamos más rápido, llena una plantilla sencilla con datos de tu auto:</p>
+                <ul class="lista-simple">
+                    <li>Nombre y teléfono.</li>
+                    <li>Marca, modelo y año.</li>
+                    <li>Qué falla notas (ruidos, luces en tablero, pérdida de fuerza, etc.).</li>
+                </ul>
+                <a href="whatsapp-ayuda.html">
+                    <button class="btn btn-outline">Ir a WhatsApp guiado</button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEAD MAGNET -->
+    <section id="guia" class="section">
+        <h2>Guía gratuita de mantenimiento</h2>
+        <p class="sub">Pídelo por WhatsApp y recibe una guía digital con recomendaciones de servicios por kilometraje y tips para cuidar tu auto.</p>
+
+        <div class="servicios-grid">
+            <div class="servicio-card">
+                <h3>“Checklist Salvatori”</h3>
+                <ul class="lista-simple">
+                    <li>Servicios recomendados por cada rango de kilómetros.</li>
+                    <li>Qué revisar antes de salir a carretera.</li>
+                    <li>Tips para alargar la vida de tu motor y frenos.</li>
+                </ul>
+                <p style="font-size:12px; margin-top:6px;">
+                    Envíanos un mensaje con el texto <strong>"Quiero la guía de mantenimiento"</strong> y te la compartimos sin costo.
+                </p>
+                <a href="https://wa.me/5218711562351?text=Quiero%20la%20guia%20de%20mantenimiento" target="_blank" rel="noopener">
+                    <button class="btn btn-primary">Pedir guía por WhatsApp</button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- BITÁCORA DIGITAL -->
+    <section id="bitacora" class="section">
+        <h2>Bitácora digital Salvatori</h2>
+        <p class="sub">Cada vez que tu auto entra al taller, registramos el servicio en una bitácora digital. Así puedes darle seguimiento a su historial de mantenimiento.</p>
+
+        <div class="servicios-grid">
+            <div class="servicio-card">
+                <h3>Ventajas de tu bitácora</h3>
+                <ul class="lista-simple">
+                    <li>Historial de servicios por fecha y kilometraje.</li>
+                    <li>Recordatorios de próximos servicios.</li>
+                    <li>Ideal para autos de plataforma y flotillas.</li>
+                </ul>
+                <p style="font-size:12px; margin-top:6px;">
+                    Si ya eres cliente y quieres revisar tu historial, ingresa a:
+                </p>
+                <a href="bitacoras.html">
+                    <button class="btn btn-outline">Ver mi bitácora digital</button>
+                </a>
+                <p style="font-size:11px; margin-top:6px;">
+                    *El acceso puede requerir datos de identificación del vehículo o un código proporcionado en el taller.
                 </p>
             </div>
         </div>
