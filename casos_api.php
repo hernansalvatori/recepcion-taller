@@ -2,20 +2,21 @@
 // casos_api.php
 header('Content-Type: application/json; charset=utf-8');
 
-// Ruta del archivo JSON donde se guardan los casos
-const CASOS_FILE = __DIR__ . '/casos_data.json';
+// Archivo donde se guardarán los casos
+define('CASOS_FILE', __DIR__ . '/casos_data.json');
+// Carpeta de imágenes (asegúrate que exista y tenga permisos de escritura)
+define('CASOS_IMG_DIR', __DIR__ . '/img/casos');
 
-// Carpeta para subir imágenes
-const UPLOAD_DIR = __DIR__ . '/uploads/casos';
-
-// Asegurar que exista la carpeta de uploads
-if (!is_dir(UPLOAD_DIR)) {
-    @mkdir(UPLOAD_DIR, 0775, true);
+// Crear carpeta de imágenes si no existe
+if (!file_exists(CASOS_IMG_DIR)) {
+    @mkdir(CASOS_IMG_DIR, 0775, true);
 }
 
-$action = $_GET['action'] ?? $_POST['action'] ?? '';
+// Leer acción
+$action = $_REQUEST['action'] ?? 'list';
 
-function leer_casos() {
+// Función para cargar los casos desde el archivo JSON
+function cargarCasos() {
     if (!file_exists(CASOS_FILE)) {
         return [];
     }
@@ -27,165 +28,175 @@ function leer_casos() {
     return $data;
 }
 
-function guardar_casos($casos) {
-    $fp = fopen(CASOS_FILE, 'c+');
-    if (!$fp) return false;
-
-    // bloquear archivo
-    flock($fp, LOCK_EX);
-    ftruncate($fp, 0);
-    rewind($fp);
-    fwrite($fp, json_encode($casos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-    fflush($fp);
-    flock($fp, LOCK_UN);
-    fclose($fp);
-    return true;
+// Función para guardar los casos en el archivo JSON
+function guardarCasos($casos) {
+    $json = json_encode($casos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    file_put_contents(CASOS_FILE, $json);
 }
 
-function guardar_imagen($campo) {
-    if (!isset($_FILES[$campo]) || $_FILES[$campo]['error'] !== UPLOAD_ERR_OK) {
+// Función para manejar subida de imagen
+function subirImagen($campoName, $prefix = 'caso') {
+    if (!isset($_FILES[$campoName]) || $_FILES[$campoName]['error'] !== UPLOAD_ERR_OK) {
         return null;
     }
 
-    $tmp  = $_FILES[$campo]['tmp_name'];
-    $name = basename($_FILES[$campo]['name']);
+    $tmpName = $_FILES[$campoName]['tmp_name'];
+    $origName = $_FILES[$campoName]['name'];
+    $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
 
-    $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-    if (!in_array($ext, ['jpg','jpeg','png','webp','gif'])) {
+    // Extensiones permitidas
+    $permitidas = ['jpg', 'jpeg', 'png', 'webp'];
+    if (!in_array($ext, $permitidas)) {
         return null;
     }
 
-    $nuevoNombre = uniqid($campo . '_', true) . '.' . $ext;
-    $destino = UPLOAD_DIR . '/' . $nuevoNombre;
+    $fileName = $prefix . '_' . uniqid() . '.' . $ext;
+    $destPath = CASOS_IMG_DIR . '/' . $fileName;
 
-    if (!move_uploaded_file($tmp, $destino)) {
-        return null;
+    if (move_uploaded_file($tmpName, $destPath)) {
+        // ruta relativa para el navegador
+        return 'img/casos/' . $fileName;
     }
 
-    // ruta relativa para usar desde el navegador
-    $rutaWeb = 'uploads/casos/' . $nuevoNombre;
-    return $rutaWeb;
+    return null;
 }
 
-// ==== RUTEO SIMPLE POR ACCIÓN ====
-switch ($action) {
+// LISTAR CASOS
+if ($action === 'list') {
+    $casos = cargarCasos();
+    echo json_encode([
+        'ok' => true,
+        'casos' => $casos
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
-    case 'list':
-        $casos = leer_casos();
-        echo json_encode(['ok' => true, 'casos' => array_values($casos)]);
-        break;
+// CREAR CASO
+if ($action === 'create') {
+    $casos = cargarCasos();
 
-    case 'create':
-        $casos = leer_casos();
+    $id = uniqid('caso_');
 
-        $id = uniqid('caso_', true);
-        $titulo      = $_POST['titulo']      ?? '';
-        $tipo        = $_POST['tipo']        ?? '';
-        $problema    = $_POST['problema']    ?? '';
-        $solucion    = $_POST['solucion']    ?? '';
-        $resultado   = $_POST['resultado']   ?? '';
-        $cliente     = $_POST['cliente']     ?? '';
-        $fecha       = $_POST['fecha']       ?? date('Y-m-d');
+    $titulo   = $_POST['titulo']   ?? '';
+    $tipo     = $_POST['tipo']     ?? '';
+    $cliente  = $_POST['cliente']  ?? '';
+    $fecha    = $_POST['fecha']    ?? '';
+    $problema = $_POST['problema'] ?? '';
+    $solucion = $_POST['solucion'] ?? '';
+    $resultado= $_POST['resultado']?? '';
 
-        $fotoAntes   = guardar_imagen('fotoAntes');
-        $fotoDespues = guardar_imagen('fotoDespues');
+    // Subir imágenes
+    $fotoAntes   = subirImagen('fotoAntes', 'antes');
+    $fotoDespues = subirImagen('fotoDespues', 'despues');
 
-        $nuevo = [
-            'id'          => $id,
-            'titulo'      => $titulo,
-            'tipo'        => $tipo,
-            'problema'    => $problema,
-            'solucion'    => $solucion,
-            'resultado'   => $resultado,
-            'cliente'     => $cliente,
-            'fecha'       => $fecha,
-            'fotoAntes'   => $fotoAntes,
-            'fotoDespues' => $fotoDespues
-        ];
+    $nuevo = [
+        'id'         => $id,
+        'titulo'     => $titulo,
+        'tipo'       => $tipo,
+        'cliente'    => $cliente,
+        'fecha'      => $fecha,
+        'problema'   => $problema,
+        'solucion'   => $solucion,
+        'resultado'  => $resultado,
+        'fotoAntes'  => $fotoAntes,
+        'fotoDespues'=> $fotoDespues
+    ];
 
-        $casos[$id] = $nuevo;
+    $casos[] = $nuevo;
+    guardarCasos($casos);
 
-        if (guardar_casos($casos)) {
-            echo json_encode(['ok' => true, 'caso' => $nuevo]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['ok' => false, 'error' => 'No se pudo guardar el caso.']);
-        }
-        break;
+    echo json_encode(['ok' => true, 'id' => $id], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
-    case 'update':
-        $casos = leer_casos();
-        $id = $_POST['id'] ?? '';
+// ACTUALIZAR CASO
+if ($action === 'update') {
+    $casos = cargarCasos();
+    $id = $_POST['id'] ?? '';
 
-        if (!$id || !isset($casos[$id])) {
-            http_response_code(404);
-            echo json_encode(['ok' => false, 'error' => 'Caso no encontrado.']);
-            break;
-        }
+    if (!$id) {
+        echo json_encode(['ok' => false, 'error' => 'ID faltante'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
 
-        $caso = $casos[$id];
+    $encontrado = false;
 
-        $caso['titulo']    = $_POST['titulo']    ?? $caso['titulo'];
-        $caso['tipo']      = $_POST['tipo']      ?? $caso['tipo'];
-        $caso['problema']  = $_POST['problema']  ?? $caso['problema'];
-        $caso['solucion']  = $_POST['solucion']  ?? $caso['solucion'];
-        $caso['resultado'] = $_POST['resultado'] ?? $caso['resultado'];
-        $caso['cliente']   = $_POST['cliente']   ?? $caso['cliente'];
-        $caso['fecha']     = $_POST['fecha']     ?? $caso['fecha'];
+    foreach ($casos as &$caso) {
+        if ($caso['id'] === $id) {
+            $encontrado = true;
 
-        // si se sube nueva foto, la sustituimos
-        $nuevaAntes = guardar_imagen('fotoAntes');
-        $nuevaDesp  = guardar_imagen('fotoDespues');
+            $caso['titulo']    = $_POST['titulo']   ?? $caso['titulo'];
+            $caso['tipo']      = $_POST['tipo']     ?? $caso['tipo'];
+            $caso['cliente']   = $_POST['cliente']  ?? $caso['cliente'];
+            $caso['fecha']     = $_POST['fecha']    ?? $caso['fecha'];
+            $caso['problema']  = $_POST['problema'] ?? $caso['problema'];
+            $caso['solucion']  = $_POST['solucion'] ?? $caso['solucion'];
+            $caso['resultado'] = $_POST['resultado']?? $caso['resultado'];
 
-        if ($nuevaAntes) {
-            $caso['fotoAntes'] = $nuevaAntes;
-        }
-        if ($nuevaDesp) {
-            $caso['fotoDespues'] = $nuevaDesp;
-        }
-
-        $casos[$id] = $caso;
-
-        if (guardar_casos($casos)) {
-            echo json_encode(['ok' => true, 'caso' => $caso]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['ok' => false, 'error' => 'No se pudo actualizar el caso.']);
-        }
-        break;
-
-    case 'delete':
-        $casos = leer_casos();
-        $id = $_POST['id'] ?? '';
-
-        if (!$id || !isset($casos[$id])) {
-            http_response_code(404);
-            echo json_encode(['ok' => false, 'error' => 'Caso no encontrado.']);
-            break;
-        }
-
-        // opcional: borrar imágenes asociadas
-        $c = $casos[$id];
-        foreach (['fotoAntes','fotoDespues'] as $campo) {
-            if (!empty($c[$campo])) {
-                $ruta = __DIR__ . '/' . $c[$campo];
-                if (file_exists($ruta)) {
-                    @unlink($ruta);
-                }
+            // Si se sube una nueva foto, la sustituimos
+            $nuevaAntes = subirImagen('fotoAntes', 'antes');
+            if ($nuevaAntes) {
+                $caso['fotoAntes'] = $nuevaAntes;
             }
-        }
 
-        unset($casos[$id]);
-        if (guardar_casos($casos)) {
-            echo json_encode(['ok' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['ok' => false, 'error' => 'No se pudo eliminar el caso.']);
-        }
-        break;
+            $nuevaDespues = subirImagen('fotoDespues', 'despues');
+            if ($nuevaDespues) {
+                $caso['fotoDespues'] = $nuevaDespues;
+            }
 
-    default:
-        http_response_code(400);
-        echo json_encode(['ok' => false, 'error' => 'Acción no válida.']);
-        break;
+            break;
+        }
+    }
+
+    if (!$encontrado) {
+        echo json_encode(['ok' => false, 'error' => 'Caso no encontrado'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    guardarCasos($casos);
+    echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);
+    exit;
 }
+
+// BORRAR CASO
+if ($action === 'delete') {
+    $casos = cargarCasos();
+    $id = $_POST['id'] ?? '';
+
+    if (!$id) {
+        echo json_encode(['ok' => false, 'error' => 'ID faltante'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    $nuevoArray = [];
+    $encontrado = false;
+
+    foreach ($casos as $caso) {
+        if ($caso['id'] === $id) {
+            $encontrado = true;
+            // Opcional: borrar también las imágenes del servidor
+            if (!empty($caso['fotoAntes'])) {
+                $path = __DIR__ . '/' . $caso['fotoAntes'];
+                if (file_exists($path)) @unlink($path);
+            }
+            if (!empty($caso['fotoDespues'])) {
+                $path = __DIR__ . '/' . $caso['fotoDespues'];
+                if (file_exists($path)) @unlink($path);
+            }
+            continue;
+        }
+        $nuevoArray[] = $caso;
+    }
+
+    if (!$encontrado) {
+        echo json_encode(['ok' => false, 'error' => 'Caso no encontrado'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    guardarCasos($nuevoArray);
+    echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+// Si llega aquí, acción no válida
+echo json_encode(['ok' => false, 'error' => 'Acción no válida'], JSON_UNESCAPED_UNICODE);
