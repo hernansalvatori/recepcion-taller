@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel interno | Salvatori</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <style>
+        :root {
+            --rojo: #c62828;
+            --rojo-oscuro: #8e0000;
+            --amarillo: #f9a825;
+            --verde: #2e7d32;
+            --gris-fondo: #f5f5f5;
+            --texto: #333333;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--texto);
+            background-color: var(--gris-fondo);
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 3px solid var(--rojo);
+        }
+
+        .nav-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111;
+        }
+
+        .logo-img img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            font-size: 11px;
+            line-height: 1.1;
+        }
+
+        .logo-text strong { font-size: 14px; }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        h1 {
+            margin: 10px 0 4px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .subtitulo {
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 14px;
+        }
+
+        .card h2 {
+            font-size: 15px;
+            margin: 0 0 8px;
+            border-left: 4px solid var(--rojo);
+            padding-left: 8px;
+        }
+
+        .grid-opciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .opcion {
+            border-radius: 10px;
+            border: 1px solid #eee;
+            padding: 10px;
+            font-size: 13px;
+        }
+
+        .opcion h3 {
+            margin: 0 0 6px;
+            font-size: 14px;
+            color: var(--rojo);
+        }
+
+        .btn {
+            border: none;
+            border-radius: 22px;
+            padding: 8px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.15s ease;
+        }
+
+        .btn-primary {
+            background: var(--rojo);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--rojo-oscuro);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 11px;
+            color: #777;
+            padding: 10px 6px 16px;
+        }
+
+        /* BLOQUEO */
+        .lock-screen {
+            max-width: 400px;
+            margin: 40px auto 0;
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .lock-screen input {
+            text-align: center;
+            letter-spacing: 3px;
+            font-size: 18px;
+        }
+
+        .lock-msg {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <div class="logo-area">
+            <div class="logo-img">
+                <img src="img/logo-salvatori.png" alt="Logo Salvatori">
+            </div>
+            <div class="logo-text">
+                <strong>Salvatori Servicio Automotriz</strong>
+                <span>Panel interno de taller</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div id="lockScreen" class="lock-screen">
+        <h2>Acceso interno</h2>
+        <p>Ingresa el PIN para abrir las herramientas internas.</p>
+        <input type="password" id="pinAcceso" maxlength="6" placeholder="••••••">
+        <div style="margin-top:10px;">
+            <button class="btn btn-primary" onclick="desbloquear()">Desbloquear</button>
+        </div>
+        <div id="lockMsg" class="lock-msg"></div>
+        <p class="lock-msg" style="margin-top:10px; color:#999;">
+            Uso exclusivo del personal del taller.
+        </p>
+    </div>
+
+    <div id="contenidoInterno" style="display:none;">
+        <h1>Panel interno Salvatori</h1>
+        <p class="subtitulo">Accesos rápidos a formatos y herramientas que no son visibles para el cliente.</p>
+
+        <div class="card">
+            <h2>Herramientas internas</h2>
+            <div class="grid-opciones">
+                <div class="opcion">
+                    <h3>Recepción interna de vehículo</h3>
+                    <p>Formato digital para recibir el auto junto con el cliente, con envío a tu base de datos vía Make/Excel.</p>
+                    <a href="recepcion-interna.html">
+                        <button class="btn btn-primary">Abrir recepción interna</button>
+                    </a>
+                </div>
+
+                <div class="opcion">
+                    <h3>Casos reales del taller</h3>
+                    <p>Captura casos de motor, transmisión, dirección, frenos, etc., para que se muestren en el sitio principal.</p>
+                    <a href="casos-interno.html">
+                        <button class="btn btn-primary">Registrar casos</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    Salvatori Servicio Automotriz · Panel interno · Su Taller Experto
+</footer>
+
+<script>
+    const PIN_ACCESO = "871453";
+
+    function desbloquear() {
+        const input = document.getElementById("pinAcceso");
+        const msg   = document.getElementById("lockMsg");
+        if (input.value === PIN_ACCESO) {
+            document.getElementById("lockScreen").style.display = "none";
+            document.getElementById("contenidoInterno").style.display = "block";
+            msg.textContent = "";
+        } else {
+            msg.textContent = "PIN incorrecto. Inténtalo de nuevo.";
+            msg.style.color = "#c62828";
+        }
+    }
+</script>
+
+</body>
+</html>
